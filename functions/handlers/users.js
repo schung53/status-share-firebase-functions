@@ -1,6 +1,7 @@
 const {db} = require('../util/admin');
 
-const config = require('../util/config')
+const config = require('../util/config');
+const { validateLoginData } = require("../util/validators");
 
 const firebase = require('firebase');
 firebase.initializeApp(config)
@@ -218,10 +219,9 @@ exports.login = (req, res) => {
         password: req.body.password
     };
 
-    let errors = {};
+    const { valid, errors } = validateLoginData(user);
 
-    if (isEmpty(user.email)) errors.email = 'Must not be empty';
-    if (isEmpty(user.password)) errors.password = 'Must not be empty';
+    if (!valid) return res.status(400).json(errors);
 
     firebase
     .auth()
@@ -234,11 +234,9 @@ exports.login = (req, res) => {
     })
     .catch((err) => {
         console.error(err);
-        if (err.code === 'auth/wrong-password') {
-            return res.status(403).json({general: 'Wrong credentials, please try again'})
-        } else {
-            return res.status(500).json({error: err.code});
-        };
+            return res
+            .status(403)
+            .json({general: 'Wrong credentials, please try again'})
     });
 };
 
