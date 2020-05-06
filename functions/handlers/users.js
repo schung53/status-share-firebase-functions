@@ -105,10 +105,13 @@ exports.updateUserDetails = (req, res) => {
 // Update a user's status
 exports.updateUserStatus = (req, res) => {
 
-    //const date = new Date().toISOString;
+    const update = {
+        status: req.body.status,
+        statusTime: new Date().toString()
+    }
 
     db.doc(`/users/${req.params.userId}`)
-    .set({status: req.body.status}, {merge: true})
+    .set(update, {merge: true})
     .then(() => {
         return res.json({message: "User status updated successfully"});
     })
