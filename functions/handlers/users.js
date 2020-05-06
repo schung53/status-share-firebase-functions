@@ -82,19 +82,19 @@ exports.postOneUser = (req, res) => {
 
 // Update a user's details
 exports.updateUserDetails = (req, res) => {
-    const updatedUser = {}
-
-    if (!isEmpty(req.body.email.trim())) updatedUser.email = req.body.email;
-    if (!isEmpty(req.body.name.trim())) updatedUser.name = req.body.name;
-    if (!isEmpty(req.body.phone.trim())) updatedUser.phone = req.body.phone;
-    if (!isEmpty(req.body.team.trim())) updatedUser.team = req.body.team;
-    if (!isEmpty(req.body.memo.trim())) updatedUser.memo = req.body.memo;
+    const updatedUser = {
+        email: req.body.email,
+        phone: req.body.phone,
+        team: req.body.team,
+        memo: req.body.memo,
+        userId: req.params.userId
+    }
 
     db
     .doc(`/users/${req.params.userId}`)
-    .update(updatedUser)
+    .set(updatedUser, { merge: true })
     .then(() => {
-        return res.json({message: "User profile updated successfully"});
+        return res.json(updatedUser);
     })
     .catch((err) => {
         console.error(err);
@@ -107,13 +107,14 @@ exports.updateUserStatus = (req, res) => {
 
     const update = {
         status: req.body.status,
-        statusTime: new Date().toString()
+        statusTime: new Date().toString(),
+        userId: req.params.userId
     }
 
     db.doc(`/users/${req.params.userId}`)
-    .set(update, {merge: true})
+    .set(update, { merge: true })
     .then(() => {
-        return res.json({message: "User status updated successfully"});
+        return res.json(update);
     })
     .catch((err) => {
         console.error(err);
@@ -124,10 +125,15 @@ exports.updateUserStatus = (req, res) => {
 // Update a user's presence
 exports.updateUserPresence = (req, res) => {
 
+    const update = {
+        present: req.body.present,
+        userId: req.params.userId
+    }
+
     db.doc(`/users/${req.params.userId}`)
-    .set({present: req.body.present}, {merge: true})
+    .set(update, {merge: true})
     .then(() => {
-        return res.json({message: "User presence updated successfully"});
+        return res.json(update);
     })
     .catch((err) => {
         console.error(err);
