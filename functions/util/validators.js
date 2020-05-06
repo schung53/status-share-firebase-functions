@@ -1,5 +1,5 @@
 const isEmpty = (string) => {
-    if (string.trim() === ' ') return true;
+    if (string.trim() === '') return true;
     else return false;
 }
 

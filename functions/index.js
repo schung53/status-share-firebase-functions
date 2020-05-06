@@ -13,6 +13,7 @@ const {
     postOneUser,
     updateUserDetails,
     updateUserStatus,
+    updateUserMemo,
     updateUserPresence,
     deleteUser,
     signup,
@@ -30,7 +31,8 @@ exports.api = functions.https.onRequest(app);
 app.get('/users', getAllUsers);
 app.get('/user/:userId', getUser)
 app.post('/user', FBAuth, postOneUser);
-//app.post('/user/:userId', FBAuth, updateUserDetails);
+app.post('/user/:userId', FBAuth, updateUserDetails);
+app.post('/user/memo/:userId', FBAuth, updateUserMemo)
 app.post('/user/status/:userId', FBAuth, updateUserStatus);
 app.post('/user/presence/:userId', FBAuth, updateUserPresence);
 app.delete('/user/:userId', FBAuth, deleteUser); 

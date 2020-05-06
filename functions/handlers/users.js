@@ -22,7 +22,8 @@ exports.getAllUsers = (req, res) => {
                 team: doc.data().team,
                 status: doc.data().status,
                 statusTime: doc.data().statusTime,
-                present: doc.data().present
+                present: doc.data().present,
+                memo: doc.data().memo
             });
         });
         return res.json(users);
@@ -62,7 +63,8 @@ exports.postOneUser = (req, res) => {
         team: req.body.team,
         status: "",
         statusTime: new Date().toString(),
-        present: true
+        present: true,
+        memo: ""
     }
 
     db
@@ -82,14 +84,11 @@ exports.postOneUser = (req, res) => {
 exports.updateUserDetails = (req, res) => {
     const updatedUser = {}
 
-    /* if (!isEmpty(req.body.email.trim())) updatedUser.email = req.body.email;
+    if (!isEmpty(req.body.email.trim())) updatedUser.email = req.body.email;
     if (!isEmpty(req.body.name.trim())) updatedUser.name = req.body.name;
-    if (!isEmpty(req.body.lastName.trim())) updatedUser.lastName = req.body.lastName;
     if (!isEmpty(req.body.phone.trim())) updatedUser.phone = req.body.phone;
     if (!isEmpty(req.body.team.trim())) updatedUser.team = req.body.team;
-    if (!isEmpty(req.body.status.trim())) updatedUser.status = req.body.status; */
-
-    updatedUser.statusTime = new Date().toString;
+    if (!isEmpty(req.body.memo.trim())) updatedUser.memo = req.body.memo;
 
     db
     .doc(`/users/${req.params.userId}`)
@@ -103,6 +102,7 @@ exports.updateUserDetails = (req, res) => {
     });
 };
 
+// Update a user's status
 exports.updateUserStatus = (req, res) => {
 
     //const date = new Date().toISOString;
@@ -118,12 +118,27 @@ exports.updateUserStatus = (req, res) => {
     });
 }
 
+// Update a user's presence
 exports.updateUserPresence = (req, res) => {
 
     db.doc(`/users/${req.params.userId}`)
     .set({present: req.body.present}, {merge: true})
     .then(() => {
         return res.json({message: "User presence updated successfully"});
+    })
+    .catch((err) => {
+        console.error(err);
+        return res.status(500).json({error: err.code});
+    });
+}
+
+// Update a user's memo
+exports.updateUserMemo = (req, res) => {
+
+    db.doc(`/users/${req.params.userId}`)
+    .set({memo: req.body.memo}, {merge: true})
+    .then(() => {
+        return res.json({message: "User memo updated successfully"});
     })
     .catch((err) => {
         console.error(err);
