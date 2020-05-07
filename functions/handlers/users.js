@@ -64,7 +64,8 @@ exports.postOneUser = (req, res) => {
         status: "",
         statusTime: new Date().toString(),
         present: true,
-        memo: ""
+        memo: "",
+        userId: ""
     }
 
     db
@@ -72,7 +73,8 @@ exports.postOneUser = (req, res) => {
     .add(newUser)
     .then((doc) => {
         doc.set({userId: doc.id}, {merge: true});
-        res.json({ message: `document ${doc.id} created successfully`});
+        newUser.userId = doc.id;
+        return res.json(newUser);
     })
     .catch((err) => {
         res.status(500).json({error: 'something went wrong'});
