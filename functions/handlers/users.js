@@ -6,6 +6,42 @@ const { validateLoginData } = require("../util/validators");
 const firebase = require('firebase');
 firebase.initializeApp(config)
 
+// Fetch app name
+exports.getAppName = (req, res) => {
+    db
+    .doc('/appName/name')
+    .get()
+    .then((doc) => {
+        if (!doc.exists) {
+            return res.status(404).json({error: 'App name not found'})
+        }
+        appName = doc.data();
+        return res.json(appName);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).json({error: err.code})
+    });
+};
+
+// Set new app name
+exports.setAppName = (req, res) => {
+    const newAppName = {
+        appName: req.body.appName
+    }
+
+    db
+    .doc('/appName/name')
+    .set(newAppName, { merge: true })
+    .then(() => {
+        return res.json(newAppName);
+    })
+    .catch((err) => {
+        console.error(err);
+        return res.status(500).json({error: err.code});
+    });
+};
+
 // Fetch all users
 exports.getAllUsers = (req, res) => {
     db

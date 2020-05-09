@@ -17,13 +17,15 @@ const {
     updateUserPresence,
     deleteUser,
     signup,
-    login} = require('./handlers/users');
+    login,
+    getAppName,
+    setAppName } = require('./handlers/users');
 const {
     getAllStatuses,
     getStatus,
     postOneStatus,
     updateStatus,
-    deleteStatus} = require('./handlers/statuses');
+    deleteStatus } = require('./handlers/statuses');
 
 exports.api = functions.https.onRequest(app);
 
@@ -36,6 +38,8 @@ app.post('/user/memo/:userId', FBAuth, updateUserMemo)
 app.post('/user/status/:userId', FBAuth, updateUserStatus);
 app.post('/user/presence/:userId', FBAuth, updateUserPresence);
 app.delete('/user/:userId', FBAuth, deleteUser); 
+app.get('/appname', getAppName);
+app.post('/appname', FBAuth, setAppName);
 
 // Status routes
 app.get('/statuses', getAllStatuses);
