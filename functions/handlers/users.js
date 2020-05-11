@@ -44,7 +44,7 @@ exports.setAppName = (req, res) => {
 
 // Fetch all users
 exports.getAllUsers = (req, res) => {
-    db
+    /* db
     .collection('users')
     .get()
     .then((data) => {
@@ -64,7 +64,7 @@ exports.getAllUsers = (req, res) => {
         });
         return res.json(users);
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err)); */
 };
 
 // Fetch one user
@@ -310,7 +310,7 @@ const isEmpty = (string) => {
 
 // Fetch users with real time updates
 exports.snapshotAllUsers = (req, res) => {
-    db
+    /* db
     .collection('users')
     .onSnapshot((snapshot) => {
         let users = [];
@@ -329,5 +329,5 @@ exports.snapshotAllUsers = (req, res) => {
             });
         });
         return res.json(users);
-    })
+    }) */
 };

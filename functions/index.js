@@ -8,7 +8,7 @@ const cors = require('cors');
 app.use(cors());
 
 const {
-    getAllUsers,
+    /* getAllUsers, */
     getUser,
     postOneUser,
     updateUserDetails,
@@ -20,7 +20,7 @@ const {
     login,
     getAppName,
     setAppName,
-    snapshotAllUsers } = require('./handlers/users');
+    /* snapshotAllUsers */ } = require('./handlers/users');
 const {
     getAllStatuses,
     getStatus,
@@ -31,7 +31,7 @@ const {
 exports.api = functions.https.onRequest(app);
 
 // User routes
-app.get('/users', snapshotAllUsers);
+/* app.get('/users', snapshotAllUsers); */
 app.get('/user/:userId', getUser)
 app.post('/user', FBAuth, postOneUser);
 app.post('/user/:userId', FBAuth, updateUserDetails);
