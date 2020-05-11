@@ -307,3 +307,27 @@ const isEmpty = (string) => {
     if (string.trim() === '') return true;
     else return false;
 };
+
+// Fetch users with real time updates
+exports.snapshotAllUsers = (req, res) => {
+    db
+    .collection('users')
+    .onSnapshot((snapshot) => {
+        let users = [];
+        //let changes = snapshot.docChanges();
+        snapshot.docs.forEach((doc) => {
+            users.push({
+                userId: doc.id,
+                email: doc.data().email,
+                name: doc.data().name,
+                phone: doc.data().phone,
+                team: doc.data().team,
+                status: doc.data().status,
+                statusTime: doc.data().statusTime,
+                present: doc.data().present,
+                memo: doc.data().memo
+            });
+        });
+        return res.json(users);
+    })
+};

@@ -19,7 +19,8 @@ const {
     signup,
     login,
     getAppName,
-    setAppName } = require('./handlers/users');
+    setAppName,
+    snapshotAllUsers } = require('./handlers/users');
 const {
     getAllStatuses,
     getStatus,
@@ -30,7 +31,7 @@ const {
 exports.api = functions.https.onRequest(app);
 
 // User routes
-app.get('/users', getAllUsers);
+app.get('/users', snapshotAllUsers);
 app.get('/user/:userId', getUser)
 app.post('/user', FBAuth, postOneUser);
 app.post('/user/:userId', FBAuth, updateUserDetails);
