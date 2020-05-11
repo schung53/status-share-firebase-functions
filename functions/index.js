@@ -16,7 +16,7 @@ const {
     updateUserMemo,
     updateUserPresence,
     deleteUser,
-    signup,
+    /* signup, */
     login,
     getAppName,
     setAppName,
@@ -50,7 +50,7 @@ app.post('/status/:statusId', FBAuth, updateStatus);
 app.delete('/status/:statusId', FBAuth, deleteStatus);
 
 // Signup and login routes
-app.post('/signup', signup);
+/* app.post('/signup', signup); */
 app.post('/login', login);
 
 /* // Delete a user's status upon user deletion

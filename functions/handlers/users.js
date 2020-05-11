@@ -215,7 +215,7 @@ exports.deleteUser = (req, res) => {
 };
 
 // Sign up
-exports.signup = (req, res) => {
+/* exports.signup = (req, res) => {
     const newUser = {
         email: req.body.email,
         phone: req.body.phone,
@@ -272,7 +272,7 @@ exports.signup = (req, res) => {
             return res.status(500).json({error: err.code})
         }
     });
-};
+}; */
 
 // Log in
 exports.login = (req, res) => {
