@@ -21,7 +21,8 @@ const {
     getAppName,
     setAppName,
     /* snapshotAllUsers */
-    getTeams } = require('./handlers/users');
+    getTeams,
+    postOneTeam } = require('./handlers/users');
 const {
     getAllStatuses,
     getStatus,
@@ -42,7 +43,8 @@ app.post('/user/presence/:userId', FBAuth, updateUserPresence);
 app.delete('/user/:userId', FBAuth, deleteUser); 
 app.get('/appname', getAppName);
 app.post('/appname', FBAuth, setAppName);
-app.get('/teams', getTeams)
+app.get('/teams', getTeams);
+app.post('/team', FBAuth, postOneTeam);
 
 // Status routes
 app.get('/statuses', getAllStatuses);

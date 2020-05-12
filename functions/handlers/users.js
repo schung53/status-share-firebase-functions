@@ -347,4 +347,22 @@ exports.getTeams = (req, res) => {
         return res.json(teams);
     })
     .catch((err) => console.error(err))
-}
+};
+
+// Create a new team
+exports.postOneTeam = (req, res) => {
+    const newTeam = {
+        team: req.body.team
+    }
+
+    db
+    .collection('teams')
+    .add(newTeam)
+    .then(() => {
+        return res.json(newTeam);
+    })
+    .catch((err) => {
+        res.status(500).json({error: 'something went wrong'});
+        console.error(err);
+    });
+};
