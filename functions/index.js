@@ -20,7 +20,8 @@ const {
     login,
     getAppName,
     setAppName,
-    /* snapshotAllUsers */ } = require('./handlers/users');
+    /* snapshotAllUsers */
+    getTeams } = require('./handlers/users');
 const {
     getAllStatuses,
     getStatus,
@@ -41,6 +42,7 @@ app.post('/user/presence/:userId', FBAuth, updateUserPresence);
 app.delete('/user/:userId', FBAuth, deleteUser); 
 app.get('/appname', getAppName);
 app.post('/appname', FBAuth, setAppName);
+app.get('/teams', getTeams)
 
 // Status routes
 app.get('/statuses', getAllStatuses);

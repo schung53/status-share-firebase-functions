@@ -331,3 +331,20 @@ exports.snapshotAllUsers = (req, res) => {
         return res.json(users);
     }) */
 };
+
+// Fetch teams
+exports.getTeams = (req, res) => {
+    db
+    .collection('teams')
+    .get()
+    .then((data) => {
+        let teams = [];
+        data.forEach((doc) => {
+            teams.push({
+                team: doc.data().team
+            });
+        });
+        return res.json(teams);
+    })
+    .catch((err) => console.error(err))
+}
