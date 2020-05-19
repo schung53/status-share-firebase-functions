@@ -341,7 +341,9 @@ exports.getTeams = (req, res) => {
         let teams = [];
         data.forEach((doc) => {
             teams.push({
-                team: doc.data().team
+                team: doc.data().team,
+                priority: doc.data().priority,
+                color: doc.data().color
             });
         });
         return res.json(teams);
@@ -352,7 +354,9 @@ exports.getTeams = (req, res) => {
 // Create a new team
 exports.postOneTeam = (req, res) => {
     const newTeam = {
-        team: req.body.team
+        team: req.body.team,
+        priority: req.body.priority,
+        color: req.body.color
     }
 
     db
