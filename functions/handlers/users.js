@@ -385,9 +385,45 @@ exports.updateTeam = (req, res) => {
 
     db
     .doc(`/teams/${req.params.teamId}`)
-    .set(updatedTeam, { merge: true })
+    .update(updatedTeam)
     .then(() => {
         return res.json(updatedTeam);
+    })
+    .catch((err) => {
+        console.error(err);
+        return res.status(500).json({error: err.code});
+    });
+};
+
+// Delete a team
+exports.deleteTeam = (req, res) => {
+    const teamToDelete = {
+        team: req.body.team,
+        teamId: req.params.teamId
+    }
+
+    db
+    .doc(`/teams/${req.params.teamId}`)
+    .get()
+    .then((doc) => {
+        if (!doc.exists) {
+            return res.status(404).json({error: 'Team not found'});
+        } else {
+            return db.doc(`/teams/${req.params.teamId}`).delete();
+        }
+    });
+    
+    db
+    .collection('/users/')
+    .where('team', '==', teamToDelete.team)
+    .get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            doc.ref.delete();
+        })
+    })
+    .then(() => {
+        res.json({message: 'Team deleted successfully'});
     })
     .catch((err) => {
         console.error(err);

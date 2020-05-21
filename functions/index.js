@@ -20,7 +20,6 @@ const {
     login,
     getAppName,
     setAppName,
-    /* snapshotAllUsers */
     getTeams,
     postOneTeam,
     deleteTeam,
@@ -39,7 +38,7 @@ exports.api = functions.https.onRequest(app);
 app.get('/user/:userId', getUser)
 app.post('/user', FBAuth, postOneUser);
 app.post('/user/:userId', FBAuth, updateUserDetails);
-app.post('/user/memo/:userId', FBAuth, updateUserMemo)
+app.post('/user/memo/:userId', FBAuth, updateUserMemo);
 app.post('/user/status/:userId', FBAuth, updateUserStatus);
 app.post('/user/presence/:userId', FBAuth, updateUserPresence);
 app.delete('/user/:userId', FBAuth, deleteUser); 
@@ -47,7 +46,7 @@ app.get('/appname', getAppName);
 app.post('/appname', FBAuth, setAppName);
 app.get('/teams', getTeams);
 app.post('/team', FBAuth, postOneTeam);
-/* app.delete('/team', FBAuth, deleteTeam); */
+app.post('/team/delete/:teamId', FBAuth, deleteTeam);
 app.post('/team/:teamId', FBAuth, updateTeam); 
 
 // Status routes
