@@ -343,7 +343,8 @@ exports.getTeams = (req, res) => {
             teams.push({
                 team: doc.data().team,
                 priority: doc.data().priority,
-                color: doc.data().color
+                color: doc.data().color,
+                teamId: doc.data().teamId
             });
         });
         return res.json(teams);
@@ -356,13 +357,16 @@ exports.postOneTeam = (req, res) => {
     const newTeam = {
         team: req.body.team,
         priority: req.body.priority,
-        color: req.body.color
+        color: req.body.color,
+        teamId: ""
     }
 
     db
     .collection('teams')
     .add(newTeam)
-    .then(() => {
+    .then((doc) => {
+        doc.set({teamId: doc.id}, {merge: true});
+        newTeam.teamId = doc.id;
         return res.json(newTeam);
     })
     .catch((err) => {
@@ -370,3 +374,5 @@ exports.postOneTeam = (req, res) => {
         console.error(err);
     });
 };
+
+// Update a team's details
