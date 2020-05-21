@@ -101,6 +101,7 @@ exports.postOneUser = (req, res) => {
         statusTime: new Date().toString(),
         present: true,
         memo: "",
+        priority: req.body.priority,
         userId: ""
     }
 
@@ -125,6 +126,7 @@ exports.updateUserDetails = (req, res) => {
         phone: req.body.phone,
         team: req.body.team,
         memo: req.body.memo,
+        priority: req.body.priority,
         userId: req.params.userId
     }
 
