@@ -47,8 +47,8 @@ app.get('/appname', getAppName);
 app.post('/appname', FBAuth, setAppName);
 app.get('/teams', getTeams);
 app.post('/team', FBAuth, postOneTeam);
-/* app.delete('/team', FBAuth, deleteTeam);
-app.post('/team', FBAuth, updateTeam); */
+/* app.delete('/team', FBAuth, deleteTeam); */
+app.post('/team/:teamId', FBAuth, updateTeam); 
 
 // Status routes
 app.get('/statuses', getAllStatuses);

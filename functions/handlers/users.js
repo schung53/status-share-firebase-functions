@@ -376,3 +376,21 @@ exports.postOneTeam = (req, res) => {
 };
 
 // Update a team's details
+exports.updateTeam = (req, res) => {
+    const updatedTeam = {
+        priority: req.body.priority,
+        color: req.body.color,
+        teamId: req.params.teamId
+    }
+
+    db
+    .doc(`/teams/${req.params.teamId}`)
+    .set(updatedTeam, { merge: true })
+    .then(() => {
+        return res.json(updatedTeam);
+    })
+    .catch((err) => {
+        console.error(err);
+        return res.status(500).json({error: err.code});
+    });
+};
