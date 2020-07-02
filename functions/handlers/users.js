@@ -122,6 +122,7 @@ exports.postOneUser = (req, res) => {
 // Update a user's details
 exports.updateUserDetails = (req, res) => {
     const updatedUser = {
+        name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
         team: req.body.team,
@@ -380,16 +381,34 @@ exports.postOneTeam = (req, res) => {
 // Update a team's details
 exports.updateTeam = (req, res) => {
     const updatedTeam = {
+        team: req.body.team,
         priority: req.body.priority,
         color: req.body.color,
         teamId: req.params.teamId
     }
-
+    const prevTeam = {prevTeam: req.body.prevTeam};
     db
     .doc(`/teams/${req.params.teamId}`)
     .update(updatedTeam)
     .then(() => {
         return res.json(updatedTeam);
+    })
+    .catch((err) => {
+        console.error(err);
+        return res.status(500).json({error: err.code});
+    });
+
+    db
+    .collection('/users/')
+    .where('team', '==', prevTeam.prevTeam)
+    .get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            doc.ref.set({team: updatedTeam.team}, {merge: true});
+        })
+    })
+    .then(() => {
+        res.json({message: 'Team updated successfully'});
     })
     .catch((err) => {
         console.error(err);

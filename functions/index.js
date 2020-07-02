@@ -4,7 +4,7 @@ const FBAuth = require('./util/fbAuth');
 
 const {db} = require('./util/admin');
 
-const cors = require('cors')({origin: true});
+const cors = require('cors');
 const bodyParser = require('body-parser');
 app.use(cors());
 app.use(bodyParser.json());
