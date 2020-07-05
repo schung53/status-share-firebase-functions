@@ -473,7 +473,7 @@ exports.deleteTeam = (req, res) => {
     
     db
     .collection('/users/')
-    .where('team', '==', teamToDelete.team)
+    .where('teamId', '==', teamToDelete.teamId)
     .get()
     .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
