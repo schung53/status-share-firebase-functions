@@ -97,6 +97,7 @@ exports.postOneUser = (req, res) => {
         name: req.body.name,
         phone: req.body.phone,
         team: req.body.team,
+        teamId: req.body.teamId,
         status: "",
         statusTime: new Date().toString(),
         present: true,
@@ -305,6 +306,42 @@ exports.login = (req, res) => {
     });
 };
 
+exports.persistentLogin = (req, res) => {
+    const user = {
+        email: req.body.email,
+        password: req.body.password
+    };
+
+    const { valid, errors } = validateLoginData(user);
+
+    if (!valid) return res.status(400).json(errors);
+
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+    .then(() => {
+        return firebase.auth().signInWithEmailAndPassword(user.email, user.password);
+    })
+    .then((data) => {
+        return data.user.getIdToken();
+    })
+    .then((token) => {
+        return res.json({token});
+    })
+    .catch((err) => {
+        console.error(err);
+            return res
+            .status(403)
+            .json({general: 'Wrong credentials, please try again'})
+    });
+}
+
+exports.refreshLogin = (req, res) => {
+    firebase.auth().currentUser.getIdToken(true)
+    .then((token) => {
+        return res.json({token});
+    })
+    .catch((err) => console.error(err))
+}
+
 // Checks whether string is empty
 const isEmpty = (string) => {
     if (string.trim() === '') return true;
@@ -400,7 +437,7 @@ exports.updateTeam = (req, res) => {
 
     db
     .collection('/users/')
-    .where('team', '==', prevTeam.prevTeam)
+    .where('teamId', '==', updatedTeam.teamId)
     .get()
     .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {

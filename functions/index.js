@@ -20,6 +20,8 @@ const {
     deleteUser,
     /* signup, */
     login,
+    persistentLogin,
+    refreshLogin,
     getAppName,
     setAppName,
     getTeams,
@@ -61,6 +63,8 @@ app.delete('/status/:statusId', FBAuth, deleteStatus);
 // Signup and login routes
 /* app.post('/signup', signup); */
 app.post('/login', login);
+app.post('/persistentLogin', persistentLogin);
+app.post('/refreshlogin', refreshLogin);
 
 /* // Delete a user's status upon user deletion
 exports.onUserDelete = functions
