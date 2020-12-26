@@ -22,7 +22,10 @@ exports.getTeams = (req, res) => {
                 team: doc.data().team,
                 priority: doc.data().priority,
                 color: doc.data().color,
-                teamId: doc.data().teamId
+                teamId: doc.data().teamId,
+                col1: doc.data().col1,
+                col2: doc.data().col2,
+                col3: doc.data().col3
             });
         });
         return res.json(teams);
@@ -36,7 +39,10 @@ exports.postOneTeam = (req, res) => {
         team: req.body.team,
         priority: req.body.priority,
         color: req.body.color,
-        teamId: ""
+        teamId: "",
+        col1: req.body.col1,
+        col2: req.body.col2,
+        col3: req.body.col3
     }
 
     db
@@ -59,7 +65,10 @@ exports.updateTeam = (req, res) => {
         team: req.body.team,
         priority: req.body.priority,
         color: req.body.color,
-        teamId: req.params.teamId
+        teamId: req.params.teamId,
+        col1: req.body.col1,
+        col2: req.body.col2,
+        col3: req.body.col3
     }
     const prevTeam = {prevTeam: req.body.prevTeam};
     db
