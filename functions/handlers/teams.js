@@ -3,7 +3,12 @@ const {db} = require('../util/admin');
 const config = require('../util/config');
 
 const firebase = require('firebase');
-firebase.initializeApp(config);
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(config);
+} else {
+    firebase.app();
+}
 
 // Fetch teams
 exports.getTeams = (req, res) => {

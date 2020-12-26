@@ -4,7 +4,12 @@ const config = require('../util/config');
 const { validateLoginData } = require("../util/validators");
 
 const firebase = require('firebase');
-firebase.initializeApp(config);
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(config);
+} else {
+    firebase.app();
+}
 
 // Fetch app name
 exports.getAppName = (req, res) => {
