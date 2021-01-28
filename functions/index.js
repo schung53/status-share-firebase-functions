@@ -14,17 +14,29 @@ const {
     updateUserStatus,
     updateUserMemo,
     updateUserPresence,
-    deleteUser } = require('./handlers/users');
+    deleteUser
+} = require('./handlers/users');
+
 const {
     getTeams,
     postOneTeam,
     deleteTeam,
-    updateTeam } = require('./handlers/teams');
+    updateTeam
+} = require('./handlers/teams');
+
 const {
     getAppName,
     setAppName,
     login,
-    refreshLogin } = require('./handlers/app');
+    refreshLogin
+} = require('./handlers/app');
+
+const {
+    postOneMessage,
+    deleteMessage,
+    updateMessageReadStatus,
+    updateMessage
+} = require('./handlers/mailbox')
 
 exports.api = functions.https.onRequest(app);
 
@@ -48,3 +60,9 @@ app.get('/appname', getAppName);
 app.post('/appname', FBAuth, setAppName);
 app.post('/login', login);
 app.post('/refreshlogin', refreshLogin);
+
+// Mailbox routes
+app.post('/mailbox/:userId/:messageId', FBAuth, postOneMessage);
+app.delete('/mailbox/:userId/:messageId', FBAuth, deleteMessage);
+app.post('mailbox/read/:userId/:messageId', FBAuth, updateMessageReadStatus);
+app.post('/mailbox/update/:userId/:messageId', FBAuth, updateMessage);
