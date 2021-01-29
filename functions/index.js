@@ -65,4 +65,4 @@ app.post('/refreshlogin', refreshLogin);
 app.post('/mailbox/:userId', FBAuth, postOneMessage);
 app.delete('/mailbox/:userId/:messageId', FBAuth, deleteMessage);
 app.post('/mailbox/read/:userId/:messageId', FBAuth, updateMessageReadStatus);
-// app.post('/mailbox/update/:userId/:messageId', FBAuth, updateMessage);
+app.post('/mailbox/update/:userId/:messageId', FBAuth, updateMessage);

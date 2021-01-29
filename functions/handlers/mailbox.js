@@ -1,4 +1,4 @@
-const {db, admin} = require('../util/admin');
+const {db} = require('../util/admin');
 
 const config = require('../util/config');
 
@@ -86,6 +86,30 @@ exports.updateMessageReadStatus = (req, res) => {
     .set(update, {merge: true})
     .then(() => {
         return res.json(update);
+    })
+    .catch((err) => {
+        console.error(err);
+        return res.status(500).json({error: err.code});
+    });
+};
+
+// Update message
+exports.updateMessage = (req, res) => {
+    const updatedMessage = {
+        message: req.body.message,
+        senderContact: req.body.senderContact,
+        senderName: req.body.senderName,
+        subject: req.body.subject
+    }
+
+    db
+    .collection('mailbox')
+    .doc(req.params.userId)
+    .collection('messages')
+    .doc(req.params.messageId)
+    .set(updatedMessage, { merge: true })
+    .then(() => {
+        return res.json(updatedMessage);
     })
     .catch((err) => {
         console.error(err);
