@@ -1,4 +1,4 @@
-const {db} = require('../util/admin');
+const {db, admin} = require('../util/admin');
 
 const config = require('../util/config');
 
@@ -23,7 +23,7 @@ exports.postOneMessage = (req, res) => {
         senderContact: req.body.senderContact,
         senderName: req.body.senderName,
         subject: req.body.subject,
-        timestamp: firebase.firestore.Timestamp.now(),
+        timestamp: new Date().getTime(),
         userId: req.params.userId
     }
 
