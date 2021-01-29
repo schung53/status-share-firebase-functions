@@ -92,7 +92,7 @@ exports.updateUserStatus = (req, res) => {
 
     const update = {
         status: req.body.status,
-        statusTime: new Date().toString(),
+        statusTime: req.body.statusTime,
         userId: req.params.userId
     }
 
