@@ -1,4 +1,4 @@
-const {db} = require('../util/admin');
+const {db, admin} = require('../util/admin');
 
 const config = require('../util/config');
 
@@ -35,10 +35,23 @@ exports.postOneMessage = (req, res) => {
     .then((doc) => {
         doc.set({messageId: doc.id}, {merge: true});
         newMessage.messageId = doc.id;
-        return res.json(newMessage);
     })
     .catch((err) => {
         res.status(500).json({error: 'Message creation failed'});
+        console.error(err);
+    });
+
+    db
+    .collection('users')
+    .doc(req.params.userId)
+    .update({
+        unreadMessages: admin.firestore.FieldValue.increment(1)
+    })
+    .then(() => {
+        return res.json(newMessage);
+    })
+    .catch((err) => {
+        res.status(500).json({error: 'User unread message count increment failed'});
         console.error(err);
     });
 };
@@ -85,11 +98,24 @@ exports.updateMessageReadStatus = (req, res) => {
     .doc(req.params.messageId)
     .set(update, {merge: true})
     .then(() => {
-        return res.json(update);
     })
     .catch((err) => {
         console.error(err);
         return res.status(500).json({error: err.code});
+    });
+
+    db
+    .collection('users')
+    .doc(req.params.userId)
+    .update({
+        unreadMessages: admin.firestore.FieldValue.increment(-1)
+    })
+    .then(() => {
+        return res.json(update);
+    })
+    .catch((err) => {
+        res.status(500).json({error: 'User unread message count increment failed'});
+        console.error(err);
     });
 };
 

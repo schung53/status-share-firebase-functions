@@ -46,19 +46,48 @@ exports.postOneUser = (req, res) => {
         present: true,
         memo: "",
         priority: req.body.priority,
-        userId: ""
+        userId: "",
+        unreadMessages: 1
     }
 
     db
     .collection('users')
     .add(newUser)
     .then((doc) => {
-        doc.set({userId: doc.id}, {merge: true});
-        newUser.userId = doc.id;
+        const newUserId = doc.id;
+
+        doc.set({userId: newUserId}, {merge: true});
+        newUser.userId = newUserId;
+
+        db
+        .collection('mailbox')
+        .doc(newUserId)
+        .set({
+            userId: newUserId
+        })
+
+        db
+        .collection('mailbox')
+        .doc(newUserId)
+        .collection('messages')
+        .add({
+            message: "Auto-generated message",
+            messageId: "",
+            readStatus: false,
+            senderContact: "sysadmin",
+            senderName: "sysadmin",
+            subject: "Mailbox initialized",
+            timestamp: new Date().getTime(),
+            userId: newUserId
+        })
+        .then((msgDoc) => {
+            msgDoc.set({messageId: msgDoc.id}, {merge: true});
+        });
+
         return res.json(newUser);
     })
     .catch((err) => {
-        res.status(500).json({error: 'something went wrong'});
+        res.status(500).json({error: 'User creation failed'});
         console.error(err);
     });
 };
@@ -149,7 +178,9 @@ exports.deleteUser = (req, res) => {
         if (!doc.exists) {
             return res.status(404).json({error: 'User not found'});
         } else {
-            return db.doc(`/users/${req.params.userId}`).delete();
+            db.doc(`/users/${req.params.userId}`).delete();
+
+            db.collection('mailbox').doc(req.params.userId).delete();
         }
     })
     .then(() => {
