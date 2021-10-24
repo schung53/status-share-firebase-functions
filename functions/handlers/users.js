@@ -139,11 +139,11 @@ exports.updateUserStatus = (req, res) => {
 // Update a user's presence
 exports.updateUserPresence = (req, res) => {
 
-    const presence = req.body.present,
-    const userId = req.params.userId
+    const presence = req.body.present;
+    const userId = req.params.userId;
 
     db.doc(`/users/${userId}`)
-    .set({present: presence})
+    .set({present: presence}, { merge: true })
     .then(() => {
         return res.json({present: presence});
     })
