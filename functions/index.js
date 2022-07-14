@@ -14,6 +14,7 @@ const {
     updateUserStatus,
     updateUserMemo,
     updateUserPresence,
+    updateUserCheckinPeriod,
     deleteUser
 } = require('./handlers/users');
 
@@ -47,6 +48,7 @@ app.post('/user/:userId', FBAuth, updateUserDetails);
 app.post('/user/memo/:userId', FBAuth, updateUserMemo);
 app.post('/user/status/:userId', FBAuth, updateUserStatus);
 app.post('/user/presence/:userId', FBAuth, updateUserPresence);
+app.post('/user/checkinperiod/:userId', FBAuth, updateUserCheckinPeriod);
 app.delete('/user/:userId', FBAuth, deleteUser); 
 
 // Team routes

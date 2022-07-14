@@ -44,6 +44,7 @@ exports.postOneUser = (req, res) => {
         status: "",
         statusTime: new Date().toString(),
         present: true,
+        checkinPeriod: "",
         memo: "",
         priority: req.body.priority,
         userId: "",
@@ -152,6 +153,23 @@ exports.updateUserPresence = (req, res) => {
         return res.status(500).json({error: err.code});
     });
 };
+
+// Update a user's checkin period
+exports.updateUserCheckinPeriod = (req, res) => {
+    
+    const checkinPeriod = req.body.checkinPeriod;
+    const userId = req.params.userId;
+
+    db.doc(`/users/${userId}`)
+    .set({checkinPeriod: checkinPeriod}, { merge: true })
+    .then(() => {
+        return res.json({checkinPeriod: checkinPeriod});
+    })
+    .catch((err) => {
+        console.error(err);
+        return res.status(500).json({error: err.code});
+    });
+}
 
 // Update a user's memo
 exports.updateUserMemo = (req, res) => {
